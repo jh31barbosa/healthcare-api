@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,8 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'healthcare_db'),
-        'USER': os.getenv('POSTGRES_USER', 'healthcare_user'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'healthcare_pass'),
+        'USER': os.getenv('POSTGRES_USER', 'jh'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '2412j6t2h'),
         'HOST': os.getenv('POSTGRESS_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
@@ -136,3 +138,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+load_dotenv()  # Isso carrega as variáveis de ambiente do arquivo .env

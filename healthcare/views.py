@@ -8,7 +8,7 @@ from .serializers import (
 )
 
 class HealthProfessionalViewSet(viewsets.ModelViewSet):
-    querset = HealthProfessional.objects.all()
+    queryset = HealthProfessional.objects.all()
     serializer_class = HealthProfessionalSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]

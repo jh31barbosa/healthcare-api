@@ -20,7 +20,7 @@ class HealthProfessionalSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_at','updated_at']
 
-class MedicalAppointmentSerializer(serializer.ModelSerializer):
+class MedicalAppointmentSerializer(serializers.ModelSerializer):
     professional = HealthProfessionalSerializer(read_only=True)
     professional_id = serializers.PrimaryKeyRelatedField(
         queryset=HealthProfessional.objects.all(),

@@ -2,7 +2,7 @@ from django.db import models
 
 from django.db import models
 from django.core.validators import MinLengthValidator
-from django.utils.translation import gettext_lazy as -
+from django.utils.translation import gettext_lazy as _
 
 class HealthProfessional(models.Model):
     class Profession(models.TextChoices):
@@ -40,7 +40,7 @@ class HealthProfessional(models.Model):
         return f"{self.social_name}({self.get_profession_display()})"
 
 class MedicalAppointment(models.Model):
-    professional = models.Foreignkey(
+    professional = models.ForeignKey(
         HealthProfessional,
         on_delete=models.PROTECT,
         related_name='appointments',
