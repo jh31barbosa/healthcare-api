@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.12
 
 # Configuração do ambiente
 ENV PYTHONUNBUFFERED=1 \
@@ -11,7 +11,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Cria e ativa venv
-RUN python -m venv /venv
+RUN python3.12 -m venv /venv
 ENV VIRTUAL_ENV=/venv
 
 # Instala dependências Python
