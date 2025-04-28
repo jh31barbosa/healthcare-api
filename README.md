@@ -1,85 +1,187 @@
-# Healthcare Management API
+ Healthcare Management API
 
-API para gestão de profissionais de saúde e agendamento de consultas médicas.
 
-## Tecnologias
+Um sistema completo para gerenciamento de profissionais de saúde e agendamento de consultas médicas, desenvolvido com Django REST Framework e Docker, pronto para deploy na DigitalOcean ou AWS.
 
-- Python 3.9
-- Django 4.2
-- Django REST Framework
-- PostgreSQL
-- Docker
-- Poetry (gerenciamento de dependências)
+📌 Sumário
+Visão Geral
 
-## Requisitos
+Funcionalidades
 
-- Docker e Docker Compose instalados
-- Python 3.9+
-- Poetry (opcional, mas recomendado)
+Tecnologias
 
-## Configuração do Ambiente Local
+Pré-requisitos
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/healthcare-api.git
-   cd healthcare-api
+Configuração Local
 
-Crie um arquivo .env na raiz do projeto com as variáveis de ambiente:
+Deploy na DigitalOcean
 
+Rotas da API
+
+Testes
+
+Contribuição
+
+Licença
+
+🌟 Visão Geral
+Esta API permite:
+
+✅ Cadastro e gerenciamento de profissionais de saúde
+
+✅ Agendamento de consultas médicas
+
+✅ Filtros e buscas avançadas
+
+✅ Segurança e validação de dados
+
+🛠 Funcionalidades
+Profissionais de Saúde
+CRUD completo (Create, Read, Update, Delete)
+
+Filtros por profissão, nome e contato
+
+Consultas Médicas
+Agendamento com vínculo ao profissional
+
+Filtros por data e profissional
+
+Segurança
+Sanitização de inputs
+
+Proteção contra SQL Injection
+
+💻 Tecnologias
+
+Tecnologia	Descrição
+Python 3.11	Linguagem principal
+Django	Framework web
+Django REST	Construção de APIs RESTful
+PostgreSQL	Banco de dados principal
+Docker	Containerização da aplicação
+Gunicorn	Servidor WSGI para produção
+Poetry	Gerenciamento de dependências
+GitHub Actions	CI/CD automatizado
+📋 Pré-requisitos
+Docker (Instalação)
+
+Docker Compose (Instalação)
+
+Python 3.11+ (Download)
+
+Conta na DigitalOcean (para deploy)
+
+🚀 Configuração Local
+1. Clone o repositório
+bash
+Copy
+Edit
+git clone https://github.com/jh29dev/healthcare-api.git
+cd healthcare-api
+2. Configure as variáveis de ambiente
+Crie um arquivo .env na raiz do projeto:
+
+ini
+Copy
+Edit
+# Django
+SECRET_KEY=sua-chave-secreta
+DEBUG=True
+
+# Banco de dados
 POSTGRES_DB=healthcare_db
 POSTGRES_USER=healthcare_user
 POSTGRES_PASSWORD=healthcare_pass
 POSTGRES_HOST=db
-SECRET_KEY=sua-chave-secreta-aqui
+POSTGRES_PORT=5432
+3. Inicie os containers
+bash
+Copy
+Edit
+docker compose up -d --build
+4. Aplique as migrações
+bash
+Copy
+Edit
+docker compose exec web python manage.py migrate
+5. Crie um superusuário (opcional)
+bash
+Copy
+Edit
+docker compose exec web python manage.py createsuperuser
+6. Acesse a aplicação
+API: http://localhost:8000/api/
 
-Inicie os containers:
-docker-compose up -d --build
+Admin: http://localhost:8000/admin/
 
-Parar ou remover containers:
-docker compose down  or -v 
-Acesse o container e execute as migrações:
-docker-compose exec web python manage.py migrate
+☁ Deploy na DigitalOcean
+1. Pré-requisitos
+Conta na DigitalOcean
 
-Crie um superusuário (opcional):
-docker-compose exec web python manage.py createsuperuser
+Container Registry configurado
 
-A API estará disponível em: http://localhost:8000/api/
+App Platform ativado
 
-Rodando os Testes
-docker-compose exec web python manage.py test
+2. Configuração do GitHub Actions
+Adicione os secrets no repositório (Settings > Secrets > Actions):
 
-Rotas da API
-Profissionais de Saúde: /api/professionals/
+DIGITALOCEAN_ACCESS_TOKEN
 
-Consultas Médicas: /api/appointments/
+DB_HOST
 
-Documentação Swagger disponível em: /api/swagger/
+DB_PASSWORD
 
-Deploy
-O projeto está configurado para deploy contínuo no Digital Ocean via GitHub Actions.
+3. Fluxo de Deploy Automático
+Push na branch main dispara o CI/CD
 
-Ambientes:
-Staging: Automático a cada push na branch main
+Build e deploy automático na DigitalOcean
 
-Production: Manual, acionado via GitHub Actions
+📡 Rotas da API
+Profissionais de Saúde
+GET /api/professionals/ → Lista todos
 
-Decisões Técnicas
-Segurança:
+POST /api/professionals/ → Cria novo
 
-Sanitização de inputs via Django REST Framework
+GET /api/professionals/{id}/ → Detalhes
 
-Proteção contra SQL Injection usando ORM do Django
+Consultas Médicas
+GET /api/appointments/ → Lista todas
 
-Validação de dados nos serializers
+POST /api/appointments/ → Agenda nova
 
-Performance:
+GET /api/appointments/?professional_id=1 → Filtra por profissional
 
-Select related para evitar N+1 queries
+🧪 Testes
+Execute os testes com:
 
-Paginação padrão do DRF
+bash
+Copy
+Edit
+docker compose exec web python manage.py test
+🤝 Contribuição
+Faça um fork do projeto
 
-Integração com Asaas:
+Crie uma nova branch:
 
-Implementação mockada com possibilidade de integração real
+bash
+Copy
+Edit
+git checkout -b feature/nova-funcionalidade
+Commit suas alterações:
 
-Split de pagamento 70/30 entre profissional e plataforma
+bash
+Copy
+Edit
+git commit -m "Adiciona nova funcionalidade"
+Faça push para o branch:
+
+bash
+Copy
+Edit
+git push origin feature/nova-funcionalidade
+Abra um Pull Request
+
+📜 Licença
+Distribuído sob a licença MIT.
+Consulte o arquivo LICENSE para mais informações.
+
