@@ -1,30 +1,35 @@
-FROM python:3.12
+FROM python:3.11-slim  # Mudei para 3.11 (mais estável) e slim (mais leve)
 
 # Configuração do ambiente
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PATH="/venv/bin:$PATH"
+    PATH="/venv/bin:$PATH" \
+    POETRY_VERSION=1.7.0
 
-# Instala dependências do sistema
+# Instala dependências mínimas do sistema
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc python3-dev && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Cria e ativa venv
-RUN python3.12 -m venv /venv
-ENV VIRTUAL_ENV=/venv
+# Instala Poetry explicitamente
+RUN pip install --no-cache-dir "poetry==$POETRY_VERSION"
 
-# Instala dependências Python
+# Configura o ambiente virtual
 WORKDIR /app
-COPY pyproject.toml poetry.lock ./
-RUN pip install --upgrade pip && \
-    pip install poetry gunicorn && \
-    poetry install --only main --no-interaction --no-ansi
+RUN python -m venv /venv
 
-# Copia o projeto
+# Copia apenas os arquivos necessários para instalação
+COPY pyproject.toml poetry.lock ./
+
+# Instala dependências
+RUN poetry install --only main --no-interaction --no-ansi
+
+# Copia o restante do projeto
 COPY . .
 
-# Coleta static files (Django)
+# Coleta static files
 RUN python manage.py collectstatic --noinput
 
 # Configura o comando de execução

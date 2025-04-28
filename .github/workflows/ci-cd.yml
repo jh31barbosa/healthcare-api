@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  APP_NAME: "healthcare-api"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,12 +14,37 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Validate Dockerfile
+      run: |
+        if ! grep -q "FROM python:3.11-slim" Dockerfile; then
+          echo "❌ Dockerfile não usa a imagem correta do Python"
+          exit 1
+        fi
+
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-    - name: Trigger DigitalOcean Build
+    - name: Get App ID
+      id: app
       run: |
-        APP_ID=$(doctl apps list --format ID,Spec.Name | grep "healthcare-api" | awk '{print $1}')
-        doctl apps create-deployment $APP_ID
+        APP_ID=$(doctl apps list --format ID,Spec.Name | grep "$APP_NAME" | awk '{print $1}')
+        echo "app_id=$APP_ID" >> $GITHUB_OUTPUT
+
+    - name: Trigger Deployment
+      run: |
+        echo "Iniciando deploy no app ${{ steps.app.outputs.app_id }}"
+        doctl apps create-deployment ${{ steps.app.outputs.app_id }}
+        
+    - name: Verify Deployment
+      run: |
+        echo "Aguardando 30s para deploy completar..."
+        sleep 30
+        STATUS=$(doctl apps get ${{ steps.app.outputs.app_id }} --format Status --no-header)
+        if [ "$STATUS" != "ACTIVE" ]; then
+          echo "❌ Deploy falhou. Status: $STATUS"
+          doctl apps list-deployments ${{ steps.app.outputs.app_id }} --format ID,Progress,Status
+          exit 1
+        fi
+        echo "✅ Deploy bem-sucedido!"
