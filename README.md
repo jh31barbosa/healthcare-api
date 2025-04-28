@@ -35,6 +35,8 @@ SECRET_KEY=sua-chave-secreta-aqui
 Inicie os containers:
 docker-compose up -d --build
 
+Parar ou remover containers:
+docker compose down  or -v 
 Acesse o container e execute as migrações:
 docker-compose exec web python manage.py migrate
 

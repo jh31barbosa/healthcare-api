@@ -1,10 +1,8 @@
-from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import HealthProfessionalViewSet, MedicalAppointmentViewSet
 
 router = DefaultRouter()
-router.register(r'professionals', HealthProfessionalViewSet)
+router.register(r'professionals', HealthProfessionalViewSet, basename='professional')
+router.register(r'appointments', MedicalAppointmentViewSet, basename='appointment')
 
-urlpatterns = [
-    path('', include(router.urls))
-]
+urlpatterns = router.urls

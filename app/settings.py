@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure---v2&)v-6xt*pr%p^4x_um_1t6dp0uxo$-*$)pz_-0j=zc!i1x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -89,11 +89,11 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'healthcare_db'),
-        'USER': os.getenv('POSTGRES_USER', 'jh'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '2412j6t2h'),
-        'HOST': os.getenv('POSTGRESS_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME': 'healthcare_db',
+        'USER': 'healthcare_user',
+        'PASSWORD': 'healthcare_pass',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
