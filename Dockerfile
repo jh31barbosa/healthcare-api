@@ -16,7 +16,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY pyproject.toml poetry.lock* /app/
-RUN pip install gunicorn && \
+RUN pip install && \
     pip install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-root --no-interaction --no-ansi
