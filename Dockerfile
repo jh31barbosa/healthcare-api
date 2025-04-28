@@ -1,36 +1,30 @@
-FROM python:3.11-slim  # Mudei para 3.11 (mais estável) e slim (mais leve)
+# Base image
+FROM python:3.11-slim
 
-# Configuração do ambiente
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PATH="/venv/bin:$PATH" \
-    POETRY_VERSION=1.7.0
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Instala dependências mínimas do sistema
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    gcc \
-    python3-dev \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala Poetry explicitamente
-RUN pip install --no-cache-dir "poetry==$POETRY_VERSION"
-
-# Configura o ambiente virtual
+# Set work directory
 WORKDIR /app
-RUN python -m venv /venv
 
-# Copia apenas os arquivos necessários para instalação
-COPY pyproject.toml poetry.lock ./
+# Install dependencies
+COPY pyproject.toml poetry.lock* /app/
+RUN pip install poetry && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-root --no-interaction --no-ansi
 
-# Instala dependências
-RUN poetry install --only main --no-interaction --no-ansi
+# Copy project
+COPY . /app/
 
-# Copia o restante do projeto
-COPY . .
+# Expose the port the app runs on
+EXPOSE 8000
 
-# Coleta static files
-RUN python manage.py collectstatic --noinput
-
-# Configura o comando de execução
-CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "app.wsgi:application"]
+# Command to run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi:application"]
