@@ -3,26 +3,17 @@
 
 Um sistema completo para gerenciamento de profissionais de saúde e agendamento de consultas médicas, desenvolvido com Django REST Framework e Docker, pronto para deploy na DigitalOcean ou AWS.
 
-📌 Sumário
-Visão Geral
+# Como Executar Localmente
 
-Funcionalidades
+## Pré-requisitos  
+- Python 3.10+  
+- PostgreSQL (ou SQLite para desenvolvimento)  
+- Git  
 
-Tecnologias
-
-Pré-requisitos
-
-Configuração Local
-
-Deploy na DigitalOcean
-
-Rotas da API
-
-Testes
-
-Contribuição
-
-Licença
+## Passo a Passo  
+1. Clone o repositório:  
+   ```bash
+   git clone https://github.com/jh31barbosa/healthcare-api.git
 
 🌟 Visão Geral
 Esta API permite:
